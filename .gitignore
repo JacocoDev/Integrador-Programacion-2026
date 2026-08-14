@@ -1,0 +1,89 @@
+# ==========================
+# Unity (single project)
+# ==========================
+
+# Unity generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Custom output folder
+EXE/
+
+# Logs
+*.log
+
+# Blender backup files
+*.blend1
+*.blend1.meta
+
+# Rider / JetBrains
+[Aa]ssets/Plugins/Editor/JetBrains*
+*.DotSettings.user
+
+# Visual Studio / IDE
+.vs/
+.gradle/
+ExportedObj/
+.consulo/
+
+# Solution / project files
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity metadata leftovers
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash reports
+sysinfo.txt
+mono_crash.*
+
+# Build artifacts
+*.apk
+*.aab
+*.app
+*.unitypackage
+*.unitypackage.meta
+
+# Crashlytics
+crashlytics-build.properties
+
+# Unity Test Runner
+InitTestScene*.unity*
+
+# Addressables
+ServerData/
+Assets/StreamingAssets/aa*
+Assets/AddressableAssetsData/link.xml*
+Assets/Addressables_Temp*
+Assets/AddressableAssetsData/*/*.bin*
+
+# Visual Scripting
+Assets/Unity.VisualScripting.Generated/
+
+# Auto-generated test scenes
+Assets/InitTestScene*.unity*
+
+# Scene dependency cache
+Assets/SceneDependencyCache*
