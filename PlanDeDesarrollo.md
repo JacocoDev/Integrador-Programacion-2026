@@ -1,0 +1,16 @@
+## Plan de Desarrollo
+
+- [x] **1. Jugador**
+- [x] **2. Sectores**
+- [x] **3. Escopeta**
+- [x] **4. Enemigo Básico**
+- [x] **5. Oleadas**
+- [ ] **6. Menús (Principal y Configuración de Partida)**
+- [ ] **7. Leaderboards**
+- [ ] **8. Audio Espacial**
+- [ ] **9. Integración del Controlador Físico**
+- [ ] **10. Más Tipos de Enemigos**
+- [ ] **11. Sistema de Progresión y Dificultad de Oleadas**
+- [ ] **12. Otros Menús (Configuración y Créditos)**
+- [ ] **13. Ajustes Finales, Balance y Pulido**
+- [ ] **14. Mejora de Assets (Audio, UI, Modelos, Efectos, etc.)**
