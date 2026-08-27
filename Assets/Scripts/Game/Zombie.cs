@@ -30,6 +30,7 @@ public class Zombie : MonoBehaviour
 
     private void Awake()
     {
+        movementSpeed = GameSettings.zombieSpeed;
         originalRotation = transform.rotation;
     }
 

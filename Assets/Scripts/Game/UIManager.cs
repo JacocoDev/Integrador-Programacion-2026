@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,10 +15,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text waveText;
     [SerializeField] private TMP_Text gameOverText;
+    [SerializeField] private GameObject mainMenuButton;
 
     private void Awake()
     {
         gameOverText.gameObject.SetActive(false);
+        mainMenuButton.SetActive(false);
     }
 
     private void Update()
@@ -43,7 +46,7 @@ public class UIManager : MonoBehaviour
         if (waveSystem.IsWaitingForNextWave())
         {
             int remainingSeconds = waveSystem.GetRemainingCooldownSeconds();
-            waveText.text = $"¡Oleada Superada!\nProxima Oleada en {remainingSeconds} s";
+            waveText.text = $"Wave Completed!\nNext Wave in {remainingSeconds} s";
             return;
         }
 
@@ -51,7 +54,7 @@ public class UIManager : MonoBehaviour
         int killedZombies = waveSystem.GetKilledZombies();
         int totalZombies = waveSystem.GetTotalZombies();
 
-        waveText.text = $"Oleada {wave}\n(Zombies {killedZombies}/{totalZombies})";
+        waveText.text = $"Wave {wave}\n(Zombies {killedZombies}/{totalZombies})";
     }
 
     private void UpdateGameOverUI()
@@ -60,5 +63,12 @@ public class UIManager : MonoBehaviour
             return;
 
         gameOverText.gameObject.SetActive(true);
+        mainMenuButton.SetActive(true);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -23,6 +23,9 @@ public class WaveSystem : MonoBehaviour
 
     private void Start()
     {
+        minimumSpawnDelay = GameSettings.minimumSpawnDelay;
+        maximumSpawnDelay = GameSettings.maximumSpawnDelay;
+
         ValidateConfiguration();
         StartNextWave();
     }

@@ -11,6 +11,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
+        maxHealth = GameSettings.playerHealth;
+
         if (maxHealth < 1)
             maxHealth = 1;
 

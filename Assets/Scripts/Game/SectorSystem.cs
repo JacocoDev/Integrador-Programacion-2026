@@ -30,6 +30,8 @@ public class SectorSystem : MonoBehaviour
 
     private void Awake()
     {
+        sectorCount = GameSettings.sectorCount;
+
         if (sectorCount < 1)
             sectorCount = 1;
 

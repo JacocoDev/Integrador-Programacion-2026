@@ -48,6 +48,8 @@ public class Shotgun : MonoBehaviour
 
     private void Awake()
     {
+        maxAmmo = GameSettings.shotgunAmmo;
+
         ValidateConfiguration();
 
         fireAction = playerInput.actions["Fire"];
