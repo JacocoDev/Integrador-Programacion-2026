@@ -8,7 +8,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Header("Look Settings")]
-    [SerializeField] private float sensitivity = 0.1f;
+    [SerializeField] private float sensitivity = 0.25f;
 
     private InputAction lookAction;
 

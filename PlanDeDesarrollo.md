@@ -6,8 +6,8 @@
 - [x] **4. Enemigo Básico**
 - [x] **5. Oleadas**
 - [x] **6. Menús (Principal y Configuración de Partida)**
-- [ ] **7. Leaderboards**
-- [ ] **8. Audio Espacial**
+- [x] **7. Leaderboards**
+- [x] **8. Audio Espacial**
 - [ ] **9. Integración del Controlador Físico**
 - [ ] **10. Más Tipos de Enemigos**
 - [ ] **11. Sistema de Progresión y Dificultad de Oleadas**

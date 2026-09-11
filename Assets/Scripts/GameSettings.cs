@@ -6,9 +6,23 @@ public static class GameSettings
 
     public static int playerHealth = 3;
     public static int shotgunAmmo = 6;
-    public static float zombieSpeed = 1f;
-    public static float minimumSpawnDelay = 4f;
-    public static float maximumSpawnDelay = 8f;
+    public static float zombieSpeed = 0.75f;
+
+    public static float minimumSpawnDelay = 3f;
+    public static float maximumSpawnDelay = 5f;
+
+    public static void Reset()
+    {
+        sectorCount = 4;
+        isHardDifficulty = false;
+
+        playerHealth = 3;
+        shotgunAmmo = 6;
+        zombieSpeed = 0.75f;
+
+        minimumSpawnDelay = 3f;
+        maximumSpawnDelay = 5f;
+    }
 
     public static void SetSectorCount(int count)
     {
@@ -23,16 +37,19 @@ public static class GameSettings
         {
             playerHealth = 1;
             shotgunAmmo = 6;
-            zombieSpeed = 1.5f;
-            minimumSpawnDelay = 3f;
-            maximumSpawnDelay = 6f;
+            zombieSpeed = 1f;
+
+            minimumSpawnDelay = 1.5f;
+            maximumSpawnDelay = 3f;
+
             return;
         }
 
         playerHealth = 3;
         shotgunAmmo = 6;
-        zombieSpeed = 1f;
-        minimumSpawnDelay = 4f;
-        maximumSpawnDelay = 8f;
+        zombieSpeed = 0.75f;
+
+        minimumSpawnDelay = 3f;
+        maximumSpawnDelay = 5f;
     }
 }

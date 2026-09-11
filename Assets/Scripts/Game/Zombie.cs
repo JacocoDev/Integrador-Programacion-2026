@@ -14,24 +14,15 @@ public class Zombie : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float attackCooldown = 1.5f;
 
-    [Header("Attack Animation")]
-    [SerializeField] private float attackTiltAngle = 30f;
-    [SerializeField] private float attackTiltDuration = 0.2f;
-    [SerializeField] private float attackReturnDuration = 0.3f;
-
     private float attackCooldownTimer;
-    private float attackAnimationTimer;
 
     private bool isAttacking;
-    private bool isReturningFromAttack;
-
-    private Quaternion originalRotation;
-    private Quaternion attackRotation;
+    private bool isDying;
+    private bool readyToBeDestroyed;
 
     private void Awake()
     {
         movementSpeed = GameSettings.zombieSpeed;
-        originalRotation = transform.rotation;
     }
 
     private void Update()
@@ -39,10 +30,12 @@ public class Zombie : MonoBehaviour
         if (!gameManager.IsGameActive())
             return;
 
-        UpdateAttackCooldown();
-        UpdateAttackAnimation();
+        if (isDying)
+            return;
 
-        if (isAttacking || isReturningFromAttack)
+        UpdateAttackCooldown();
+
+        if (isAttacking)
             return;
 
         MoveTowardsPlayer();
@@ -67,7 +60,10 @@ public class Zombie : MonoBehaviour
         if (distance <= attackDistance)
             return;
 
-        transform.position += direction.normalized * movementSpeed * Time.deltaTime;
+        transform.position +=
+            direction.normalized *
+            movementSpeed *
+            Time.deltaTime;
     }
 
     private void TryAttack()
@@ -84,86 +80,62 @@ public class Zombie : MonoBehaviour
             return;
 
         attackCooldownTimer = attackCooldown;
-        StartAttackAnimation();
-    }
-
-    private void StartAttackAnimation()
-    {
         isAttacking = true;
-        isReturningFromAttack = false;
-        attackAnimationTimer = 0f;
-
-        Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0f;
-
-        if (directionToPlayer.sqrMagnitude <= 0f)
-        {
-            attackRotation = Quaternion.Euler(
-                transform.eulerAngles.x - attackTiltAngle,
-                transform.eulerAngles.y,
-                transform.eulerAngles.z
-            );
-
-            return;
-        }
-
-        Quaternion playerRotation = Quaternion.LookRotation(directionToPlayer);
-        attackRotation = playerRotation * Quaternion.Euler(attackTiltAngle, 0f, 0f);
     }
 
-    private void UpdateAttackAnimation()
+    public void FinishAttack()
     {
-        if (!isAttacking && !isReturningFromAttack)
+        isAttacking = false;
+    }
+
+    public void DealAttackDamage()
+    {
+        playerHealth.TakeDamage();
+    }
+
+    public void StartDeath()
+    {
+        if (isDying)
             return;
 
-        if (isAttacking)
-        {
-            UpdateAttackTilt();
-            return;
-        }
-
-        UpdateAttackReturn();
+        isDying = true;
+        isAttacking = false;
+        readyToBeDestroyed = false;
     }
 
-    private void UpdateAttackTilt()
+    public void SetReadyToBeDestroyed()
     {
-        attackAnimationTimer += Time.deltaTime;
-
-        float progress = attackAnimationTimer / attackTiltDuration;
-
-        if (progress >= 1f)
-        {
-            progress = 1f;
-            playerHealth.TakeDamage();
-
-            isAttacking = false;
-            isReturningFromAttack = true;
-            attackAnimationTimer = 0f;
-        }
-
-        transform.rotation = Quaternion.Slerp(originalRotation, attackRotation, progress);
+        readyToBeDestroyed = true;
     }
 
-    private void UpdateAttackReturn()
+    public bool IsAttacking()
     {
-        attackAnimationTimer += Time.deltaTime;
-
-        float progress = attackAnimationTimer / attackReturnDuration;
-
-        if (progress >= 1f)
-        {
-            progress = 1f;
-            isReturningFromAttack = false;
-            attackAnimationTimer = 0f;
-        }
-
-        transform.rotation = Quaternion.Slerp(attackRotation, originalRotation, progress);
+        return isAttacking;
     }
 
-    public void Initialize(Transform targetPlayer, PlayerHealth targetPlayerHealth, GameManager targetGameManager)
+    public bool IsDying()
+    {
+        return isDying;
+    }
+
+    public bool IsReadyToBeDestroyed()
+    {
+        return readyToBeDestroyed;
+    }
+
+    public void Initialize(
+        Transform targetPlayer,
+        PlayerHealth targetPlayerHealth,
+        GameManager targetGameManager
+    )
     {
         player = targetPlayer;
         playerHealth = targetPlayerHealth;
         gameManager = targetGameManager;
+    }
+
+    public Transform GetPlayer()
+    {
+        return player;
     }
 }

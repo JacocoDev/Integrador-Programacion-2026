@@ -5,6 +5,7 @@ public class WaveSystem : MonoBehaviour
     [Header("References")]
     [SerializeField] private EnemySystem enemySystem;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private ScoreManager scoreManager;
 
     [Header("Wave Configuration")]
     [SerializeField] private int startingZombieCount = 5;
@@ -50,6 +51,12 @@ public class WaveSystem : MonoBehaviour
         if (spawnedZombies >= totalZombies)
             return;
 
+        if (enemySystem.GetAliveZombieCount() > 0)
+            return;
+
+        if (spawnedZombies > 0 && spawnTimer <= 0f)
+            spawnTimer = GetNextSpawnDelay();
+
         spawnTimer -= Time.deltaTime;
 
         if (spawnTimer > 0f)
@@ -58,8 +65,20 @@ public class WaveSystem : MonoBehaviour
         enemySystem.SpawnZombie();
         spawnedZombies++;
 
+        /*
+        LÓGICA ANTERIOR DE GENERACIÓN:
+
+        Después de generar un zombie, se iniciaba un temporizador
+        aleatorio independientemente de si el zombie anterior seguía vivo.
+
         if (spawnedZombies < totalZombies)
             spawnTimer = GetNextSpawnDelay();
+
+        Esta lógica NO se elimina porque puede ser útil más adelante.
+        Ahora se utiliza una lógica diferente:
+        primero debe morir el zombie actual y después comienza
+        el tiempo de espera para generar el siguiente.
+        */
     }
 
     private void UpdateWaveCompletion()
@@ -88,6 +107,11 @@ public class WaveSystem : MonoBehaviour
         currentWave++;
         totalZombies = startingZombieCount + currentWave - 1;
         spawnedZombies = 0;
+
+        /*
+        El primer zombie de la oleada aparece inmediatamente.
+        */
+
         spawnTimer = 0f;
         isWaitingForNextWave = false;
     }
@@ -96,8 +120,21 @@ public class WaveSystem : MonoBehaviour
     {
         isWaitingForNextWave = true;
         waveCooldownTimer = waveCooldown;
+
+        scoreManager.AddWavePoints();
     }
 
+    /*
+    LÓGICA ANTERIOR DE DELAY ALEATORIO:
+
+    Este método se conserva porque corresponde al sistema anterior
+    de generación de zombies mediante un rango de tiempo aleatorio.
+
+    Ahora el método puede reutilizarse para determinar cuánto esperar
+    después de que muera un zombie antes de generar el siguiente.
+
+    No borrar.
+    */
     private float GetNextSpawnDelay()
     {
         return Random.Range(minimumSpawnDelay, maximumSpawnDelay);

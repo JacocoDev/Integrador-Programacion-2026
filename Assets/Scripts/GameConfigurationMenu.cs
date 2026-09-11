@@ -15,6 +15,8 @@ public class GameConfigurationMenu : MonoBehaviour
 
     private void Awake()
     {
+        GameSettings.Reset();
+
         fourDirectionsButton.onClick.AddListener(SelectFourDirections);
         sixDirectionsButton.onClick.AddListener(SelectSixDirections);
         eightDirectionsButton.onClick.AddListener(SelectEightDirections);

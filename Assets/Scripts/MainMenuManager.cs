@@ -10,7 +10,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OpenLeaderboards()
     {
-        Debug.Log("Leaderboards todavía no implementado.");
+        SceneManager.LoadScene("Leaderboards");
     }
 
     public void OpenSettings()
