@@ -6,7 +6,6 @@ public static class GameSettings
 
     public static int playerHealth = 3;
     public static int shotgunAmmo = 6;
-    public static float zombieSpeed = 0.75f;
 
     public static float minimumSpawnDelay = 3f;
     public static float maximumSpawnDelay = 5f;
@@ -18,7 +17,6 @@ public static class GameSettings
 
         playerHealth = 3;
         shotgunAmmo = 6;
-        zombieSpeed = 0.75f;
 
         minimumSpawnDelay = 3f;
         maximumSpawnDelay = 5f;
@@ -37,7 +35,6 @@ public static class GameSettings
         {
             playerHealth = 1;
             shotgunAmmo = 6;
-            zombieSpeed = 1f;
 
             minimumSpawnDelay = 1.5f;
             maximumSpawnDelay = 3f;
@@ -47,7 +44,6 @@ public static class GameSettings
 
         playerHealth = 3;
         shotgunAmmo = 6;
-        zombieSpeed = 0.75f;
 
         minimumSpawnDelay = 3f;
         maximumSpawnDelay = 5f;

@@ -8,21 +8,28 @@ public class EnemySystem : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private ScoreManager scoreManager;
-    [SerializeField] private Zombie zombiePrefab;
+    [SerializeField] private Enemy enemyPrefab;
     [SerializeField] private SectorSystem sectorSystem;
+    [SerializeField] private EnemySpawnSystem enemySpawnSystem;
 
     [Header("Spawn Configuration")]
     [SerializeField] private float spawnDistance = 12f;
 
-    private List<Zombie> zombies = new();
+    private List<Enemy> enemies = new();
 
     private void Update()
     {
-        UpdateDeadZombies();
+        UpdateDeadEnemies();
     }
 
-    public void SpawnZombie()
+    public void SpawnEnemy(int wave)
     {
+        EnemyData enemyData =
+            enemySpawnSystem.GetEnemyDataForWave(wave);
+
+        if (enemyData == null)
+            return;
+
         int sectorCount = sectorSystem.GetSectorCount();
         int sectorIndex = Random.Range(0, sectorCount);
 
@@ -35,68 +42,63 @@ public class EnemySystem : MonoBehaviour
         Transform sector =
             sectorSystem.GetSectorTransform(sectorIndex);
 
-        Zombie zombie = Instantiate(
-            zombiePrefab,
+        Enemy enemy = Instantiate(
+            enemyPrefab,
             spawnPosition,
             Quaternion.identity,
             sector
         );
 
-        zombie.Initialize(
+        enemy.Initialize(
             player,
             playerHealth,
-            gameManager
+            gameManager,
+            enemyData
         );
 
-        zombies.Add(zombie);
+        enemies.Add(enemy);
     }
 
     public void ShootSector(int sectorIndex)
     {
-        Zombie zombie = GetZombieInSector(sectorIndex);
+        Enemy enemy = GetEnemyInSector(sectorIndex);
 
-        if (zombie == null)
+        if (enemy == null)
             return;
 
-        ZombieAnimation zombieAnimation =
-            zombie.GetComponent<ZombieAnimation>();
-
-        if (zombieAnimation.IsDying())
+        if (enemy.IsDying())
             return;
 
-        scoreManager.AddZombiePoints(
-            "Normal Zombie",
-            1
+        bool died = enemy.TakeDamage();
+
+        if (!died)
+            return;
+
+        EnemyData enemyData = enemy.GetEnemyData();
+
+        scoreManager.AddEnemyPoints(
+            enemyData.GetEnemyName(),
+            enemyData.GetScorePoints()
         );
-
-        ZombieAudio zombieAudio =
-            zombie.GetComponent<ZombieAudio>();
-
-        if (zombieAudio != null)
-        {
-            zombieAudio.PlayDeathSound();
-        }
-
-        zombieAnimation.StartDeathAnimation();
     }
 
-    private void UpdateDeadZombies()
+    private void UpdateDeadEnemies()
     {
-        for (int i = zombies.Count - 1; i >= 0; i--)
+        for (int i = enemies.Count - 1; i >= 0; i--)
         {
-            Zombie zombie = zombies[i];
+            Enemy enemy = enemies[i];
 
-            if (zombie == null)
+            if (enemy == null)
             {
-                zombies.RemoveAt(i);
+                enemies.RemoveAt(i);
                 continue;
             }
 
-            if (!zombie.IsReadyToBeDestroyed())
+            if (!enemy.IsReadyToBeDestroyed())
                 continue;
 
-            zombies.RemoveAt(i);
-            Destroy(zombie.gameObject);
+            enemies.RemoveAt(i);
+            Destroy(enemy.gameObject);
         }
     }
 
@@ -110,29 +112,33 @@ public class EnemySystem : MonoBehaviour
         return new Vector3(x, 0f, z);
     }
 
-    private Zombie GetZombieInSector(int sectorIndex)
+    private Enemy GetEnemyInSector(int sectorIndex)
     {
         Transform sector =
             sectorSystem.GetSectorTransform(sectorIndex);
 
-        for (int i = 0; i < zombies.Count; i++)
+        for (int i = 0; i < enemies.Count; i++)
         {
-            Zombie zombie = zombies[i];
+            Enemy enemy = enemies[i];
 
-            if (zombie == null)
+            if (enemy == null)
                 continue;
 
-            if (zombie.transform.parent == sector)
-                return zombie;
+            if (enemy.transform.parent == sector)
+                return enemy;
         }
 
         return null;
     }
 
-    public int GetAliveZombieCount()
+    public int GetAliveEnemyCount()
     {
-        zombies.RemoveAll(zombie => zombie == null);
+        for (int i = enemies.Count - 1; i >= 0; i--)
+        {
+            if (enemies[i] == null)
+                enemies.RemoveAt(i);
+        }
 
-        return zombies.Count;
+        return enemies.Count;
     }
 }

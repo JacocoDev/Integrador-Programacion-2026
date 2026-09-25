@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e4b00614f507c24fb0e25fa359a99dd, type: 3}
+  m_Name: NormalZombieData
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  enemyName: Normal Zombie
+  enemyColor: {r: 0.22507057, g: 0.6473415, b: 0.2821619, a: 1}
+  health: 1
+  scorePoints: 1
+  hasSpawnScream: 0
+  hasHitStun: 0
+  easyValues:
+    movementSpeed: 0.75
+    attackCooldown: 1.5
+    spawnPreparationDuration: 0
+    hitStunDuration: 0
+  hardValues:
+    movementSpeed: 1
+    attackCooldown: 1.5
+    spawnPreparationDuration: 0
+    hitStunDuration: 0
+  footstepsClip: {fileID: 8300000, guid: cf2f5e1b1f68fd245bb6dca281914d18, type: 3}
+  groanClip: {fileID: 8300000, guid: 3a5b0317976fd2647a93cc58e3b42d8c, type: 3}
+  attackClip: {fileID: 8300000, guid: 1a74f861ff0f758499dc426d8573839f, type: 3}
+  deathClip: {fileID: 8300000, guid: 733b6b015c4d5ba4592f8d0106a1e18d, type: 3}
+  spawnScreamClip: {fileID: 0}
+  hitStunClip: {fileID: 0}
+  minimumFootstepInterval: 0.35
+  maximumFootstepInterval: 0.55
+  minimumGroanInterval: 3
+  maximumGroanInterval: 7

@@ -13,8 +13,8 @@ public class ScoreManager : MonoBehaviour
     private int baseScore;
     private int completedWaves;
 
-    private Dictionary<string, int> zombieKillCounts = new();
-    private Dictionary<string, int> zombiePoints = new();
+    private Dictionary<string, int> enemyKillCounts = new();
+    private Dictionary<string, int> enemyPoints = new();
     private Queue<string> scoreNotifications = new();
 
     private float scoreMultiplier;
@@ -37,22 +37,24 @@ public class ScoreManager : MonoBehaviour
         scoreMultiplier = easyMultiplier;
     }
 
-    public void AddZombiePoints(string zombieName, int points)
+    public void AddEnemyPoints(string enemyName, int points)
     {
         baseScore += points;
 
-        if (zombieKillCounts.ContainsKey(zombieName))
+        if (enemyKillCounts.ContainsKey(enemyName))
         {
-            zombieKillCounts[zombieName]++;
-            zombiePoints[zombieName] += points;
+            enemyKillCounts[enemyName]++;
+            enemyPoints[enemyName] += points;
         }
         else
         {
-            zombieKillCounts.Add(zombieName, 1);
-            zombiePoints.Add(zombieName, points);
+            enemyKillCounts.Add(enemyName, 1);
+            enemyPoints.Add(enemyName, points);
         }
 
-        scoreNotifications.Enqueue($"+{points} {zombieName}");
+        scoreNotifications.Enqueue(
+            $"+{points} {enemyName}"
+        );
     }
 
     public void AddWavePoints()
@@ -60,7 +62,9 @@ public class ScoreManager : MonoBehaviour
         baseScore += wavePoints;
         completedWaves++;
 
-        scoreNotifications.Enqueue($"+{wavePoints} Wave");
+        scoreNotifications.Enqueue(
+            $"+{wavePoints} Wave"
+        );
     }
 
     public int GetCurrentScore()
@@ -70,7 +74,9 @@ public class ScoreManager : MonoBehaviour
 
     public int GetFinalScore()
     {
-        return Mathf.RoundToInt(baseScore * scoreMultiplier);
+        return Mathf.RoundToInt(
+            baseScore * scoreMultiplier
+        );
     }
 
     public int GetCompletedWaves()
@@ -102,20 +108,29 @@ public class ScoreManager : MonoBehaviour
 
         if (completedWaves > 0)
         {
-            int totalWavePoints = completedWaves * wavePoints;
-            summary.Append($"+{totalWavePoints} Waves Completed (x{completedWaves})");
+            int totalWavePoints =
+                completedWaves * wavePoints;
+
+            summary.Append(
+                $"+{totalWavePoints} Waves Completed (x{completedWaves})"
+            );
         }
 
-        foreach (KeyValuePair<string, int> zombieEntry in zombieKillCounts)
+        foreach (
+            KeyValuePair<string, int> enemyEntry
+            in enemyKillCounts
+        )
         {
-            string zombieName = zombieEntry.Key;
-            int killCount = zombieEntry.Value;
-            int totalZombiePoints = zombiePoints[zombieName];
+            string enemyName = enemyEntry.Key;
+            int killCount = enemyEntry.Value;
+            int totalEnemyPoints = enemyPoints[enemyName];
 
             if (summary.Length > 0)
                 summary.Append("\n");
 
-            summary.Append($"+{totalZombiePoints} {zombieName}s (x{killCount})");
+            summary.Append(
+                $"+{totalEnemyPoints} {enemyName}s (x{killCount})"
+            );
         }
 
         return summary.ToString();

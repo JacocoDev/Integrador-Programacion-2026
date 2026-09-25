@@ -1667,7 +1667,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
   playerInput: {fileID: 976184699}
   gameManager: {fileID: 1857708258}
-  sensitivity: 0.25
+  minimumSensitivity: 0.05
+  maximumSensitivity: 0.45
 --- !u!4 &976184698
 Transform:
   m_ObjectHideFlags: 0
@@ -1756,7 +1757,7 @@ AudioSource:
   m_GameObject: {fileID: 976184693}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1432700311618744122, guid: d185de99ac7584b49b7bc61b218f7634, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -2306,7 +2307,7 @@ AudioSource:
   m_GameObject: {fileID: 1238684728}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1502639297621402293, guid: d185de99ac7584b49b7bc61b218f7634, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -2563,6 +2564,7 @@ GameObject:
   - component: {fileID: 1381529412}
   - component: {fileID: 1381529411}
   - component: {fileID: 1381529413}
+  - component: {fileID: 1381529417}
   - component: {fileID: 1381529414}
   - component: {fileID: 1381529416}
   - component: {fileID: 1381529415}
@@ -2624,8 +2626,9 @@ MonoBehaviour:
   playerHealth: {fileID: 976184700}
   gameManager: {fileID: 1857708258}
   scoreManager: {fileID: 858084151}
-  zombiePrefab: {fileID: 1212203183780077164, guid: ec543c8c5ce9c834eaff82a44c964e58, type: 3}
+  enemyPrefab: {fileID: 1212203183780077164, guid: ec543c8c5ce9c834eaff82a44c964e58, type: 3}
   sectorSystem: {fileID: 1381529411}
+  enemySpawnSystem: {fileID: 1381529417}
   spawnDistance: 12
 --- !u!114 &1381529414
 MonoBehaviour:
@@ -2642,7 +2645,8 @@ MonoBehaviour:
   enemySystem: {fileID: 1381529413}
   gameManager: {fileID: 1857708258}
   scoreManager: {fileID: 858084151}
-  startingZombieCount: 5
+  startingEnemyCount: 3
+  enemiesAddedPerWave: 2
   minimumSpawnDelay: 0
   maximumSpawnDelay: 0
   waveCooldown: 10
@@ -2655,7 +2659,7 @@ AudioSource:
   m_GameObject: {fileID: 1381529410}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5487437752787424201, guid: d185de99ac7584b49b7bc61b218f7634, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -2759,6 +2763,42 @@ MonoBehaviour:
   audioSource: {fileID: 1381529415}
   roundStartClip: {fileID: 8300000, guid: 7bcf33b327864564b9b1997757c5cfff, type: 3}
   roundEndClip: {fileID: 8300000, guid: 7bcf33b327864564b9b1997757c5cfff, type: 3}
+--- !u!114 &1381529417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381529410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df17f3b13ab3aee43b89f36b67886292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnSystem
+  normalZombie:
+    enemyData: {fileID: 11400000, guid: b7691202c30b13540b52c5073a082666, type: 2}
+    easyPeakWave: 3
+    hardPeakWave: 2
+    spread: 2
+  bruteZombie:
+    enemyData: {fileID: 11400000, guid: b8869d8fde9fb1346a227a5cc8649283, type: 2}
+    easyPeakWave: 6
+    hardPeakWave: 4
+    spread: 2
+  fastZombie:
+    enemyData: {fileID: 11400000, guid: 464e611dfc28b964cb22cd60b1221b99, type: 2}
+    easyPeakWave: 9
+    hardPeakWave: 6
+    spread: 2
+  tankZombie:
+    enemyData: {fileID: 11400000, guid: d9f8f7ab3835dd149a826d1bdc4996c0, type: 2}
+    easyPeakWave: 12
+    hardPeakWave: 8
+    spread: 2
+  currentNormalProbability: 0.25
+  currentBruteProbability: 0.25
+  currentFastProbability: 0.25
+  currentTankProbability: 0.25
 --- !u!1 &1633213052
 GameObject:
   m_ObjectHideFlags: 0

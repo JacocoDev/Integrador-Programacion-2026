@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e4b00614f507c24fb0e25fa359a99dd, type: 3}
+  m_Name: BruteZombieData
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  enemyName: Brute Zombie
+  enemyColor: {r: 0.58970845, g: 0.48412204, b: 0.20017724, a: 1}
+  health: 2
+  scorePoints: 3
+  hasSpawnScream: 0
+  hasHitStun: 1
+  easyValues:
+    movementSpeed: 0.75
+    attackCooldown: 1.5
+    spawnPreparationDuration: 0
+    hitStunDuration: 1
+  hardValues:
+    movementSpeed: 1.25
+    attackCooldown: 1.5
+    spawnPreparationDuration: 0
+    hitStunDuration: 0.5
+  footstepsClip: {fileID: 0}
+  groanClip: {fileID: 0}
+  attackClip: {fileID: 0}
+  deathClip: {fileID: 0}
+  spawnScreamClip: {fileID: 0}
+  hitStunClip: {fileID: 0}
+  minimumFootstepInterval: 0.35
+  maximumFootstepInterval: 0.55
+  minimumGroanInterval: 3
+  maximumGroanInterval: 7

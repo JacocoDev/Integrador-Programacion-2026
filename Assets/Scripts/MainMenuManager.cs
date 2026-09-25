@@ -15,12 +15,12 @@ public class MainMenuManager : MonoBehaviour
 
     public void OpenSettings()
     {
-        Debug.Log("Configuración todavía no implementada.");
+        SceneManager.LoadScene("Settings");
     }
 
     public void OpenCredits()
     {
-        Debug.Log("Créditos todavía no implementados.");
+        SceneManager.LoadScene("Credits");
     }
 
     public void QuitGame()

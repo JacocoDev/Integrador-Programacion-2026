@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class ZombieAnimation : MonoBehaviour
+public class EnemyAnimation : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Zombie zombie;
+    [SerializeField] private Enemy enemy;
 
     [Header("Attack Animation")]
     [SerializeField] private float attackTiltAngle = 30f;
@@ -34,22 +34,27 @@ public class ZombieAnimation : MonoBehaviour
     private Vector3 deathStartPosition;
     private Vector3 deathEndPosition;
 
+    public void Initialize(Enemy targetEnemy)
+    {
+        enemy = targetEnemy;
+
+        originalRotation = transform.rotation;
+        previousAttacking = enemy.IsAttacking();
+
+        attackAnimationTimer = 0f;
+        deathAnimationTimer = 0f;
+
+        isAttacking = false;
+        isReturningFromAttack = false;
+        isDying = false;
+        deathAnimationFinished = false;
+
+        ValidateConfiguration();
+    }
+
     private void Awake()
     {
-        originalRotation = transform.rotation;
-        previousAttacking = zombie.IsAttacking();
-
-        if (attackTiltDuration <= 0f)
-            attackTiltDuration = 0.01f;
-
-        if (attackReturnDuration <= 0f)
-            attackReturnDuration = 0.01f;
-
-        if (deathDuration <= 0f)
-            deathDuration = 0.01f;
-
-        if (deathGroundDelay < 0f)
-            deathGroundDelay = 0f;
+        ValidateConfiguration();
     }
 
     private void Update()
@@ -62,7 +67,7 @@ public class ZombieAnimation : MonoBehaviour
 
         UpdateAttackAnimation();
 
-        bool currentAttacking = zombie.IsAttacking();
+        bool currentAttacking = enemy.IsAttacking();
 
         if (currentAttacking && !previousAttacking)
             StartAttackAnimation();
@@ -77,7 +82,7 @@ public class ZombieAnimation : MonoBehaviour
         attackAnimationTimer = 0f;
 
         Vector3 directionToPlayer =
-            zombie.GetPlayer().position - transform.position;
+            enemy.GetPlayer().position - transform.position;
 
         directionToPlayer.y = 0f;
 
@@ -124,13 +129,13 @@ public class ZombieAnimation : MonoBehaviour
         {
             progress = 1f;
 
-            zombie.DealAttackDamage();
+            enemy.DealAttackDamage();
 
             isAttacking = false;
             isReturningFromAttack = true;
             attackAnimationTimer = 0f;
 
-            zombie.FinishAttack();
+            enemy.FinishAttack();
         }
 
         transform.rotation = Quaternion.Slerp(
@@ -173,8 +178,6 @@ public class ZombieAnimation : MonoBehaviour
         isAttacking = false;
         isReturningFromAttack = false;
 
-        zombie.StartDeath();
-
         deathStartPosition = transform.position;
 
         deathEndPosition = deathStartPosition;
@@ -183,7 +186,7 @@ public class ZombieAnimation : MonoBehaviour
         deathStartRotation = transform.rotation;
 
         Vector3 directionToPlayer =
-            zombie.GetPlayer().position - transform.position;
+            enemy.GetPlayer().position - transform.position;
 
         directionToPlayer.y = 0f;
 
@@ -245,7 +248,22 @@ public class ZombieAnimation : MonoBehaviour
 
         deathAnimationFinished = true;
 
-        zombie.SetReadyToBeDestroyed();
+        enemy.SetReadyToBeDestroyed();
+    }
+
+    private void ValidateConfiguration()
+    {
+        if (attackTiltDuration <= 0f)
+            attackTiltDuration = 0.01f;
+
+        if (attackReturnDuration <= 0f)
+            attackReturnDuration = 0.01f;
+
+        if (deathDuration <= 0f)
+            deathDuration = 0.01f;
+
+        if (deathGroundDelay < 0f)
+            deathGroundDelay = 0f;
     }
 
     public bool IsDying()

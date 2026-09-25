@@ -8,14 +8,16 @@ public class WaveSystem : MonoBehaviour
     [SerializeField] private ScoreManager scoreManager;
 
     [Header("Wave Configuration")]
-    [SerializeField] private int startingZombieCount = 5;
+    [SerializeField] private int startingEnemyCount = 3;
+    [SerializeField] private int enemiesAddedPerWave = 2;
+
     [SerializeField] private float minimumSpawnDelay = 4f;
     [SerializeField] private float maximumSpawnDelay = 8f;
     [SerializeField] private float waveCooldown = 5f;
 
     private int currentWave;
-    private int totalZombies;
-    private int spawnedZombies;
+    private int totalEnemies;
+    private int spawnedEnemies;
 
     private float spawnTimer;
     private float waveCooldownTimer;
@@ -48,13 +50,13 @@ public class WaveSystem : MonoBehaviour
 
     private void UpdateWaveSpawning()
     {
-        if (spawnedZombies >= totalZombies)
+        if (spawnedEnemies >= totalEnemies)
             return;
 
-        if (enemySystem.GetAliveZombieCount() > 0)
+        if (enemySystem.GetAliveEnemyCount() > 0)
             return;
 
-        if (spawnedZombies > 0 && spawnTimer <= 0f)
+        if (spawnedEnemies > 0 && spawnTimer <= 0f)
             spawnTimer = GetNextSpawnDelay();
 
         spawnTimer -= Time.deltaTime;
@@ -62,31 +64,16 @@ public class WaveSystem : MonoBehaviour
         if (spawnTimer > 0f)
             return;
 
-        enemySystem.SpawnZombie();
-        spawnedZombies++;
-
-        /*
-        LÓGICA ANTERIOR DE GENERACIÓN:
-
-        Después de generar un zombie, se iniciaba un temporizador
-        aleatorio independientemente de si el zombie anterior seguía vivo.
-
-        if (spawnedZombies < totalZombies)
-            spawnTimer = GetNextSpawnDelay();
-
-        Esta lógica NO se elimina porque puede ser útil más adelante.
-        Ahora se utiliza una lógica diferente:
-        primero debe morir el zombie actual y después comienza
-        el tiempo de espera para generar el siguiente.
-        */
+        enemySystem.SpawnEnemy(currentWave);
+        spawnedEnemies++;
     }
 
     private void UpdateWaveCompletion()
     {
-        if (spawnedZombies < totalZombies)
+        if (spawnedEnemies < totalEnemies)
             return;
 
-        if (enemySystem.GetAliveZombieCount() > 0)
+        if (enemySystem.GetAliveEnemyCount() > 0)
             return;
 
         StartWaveCooldown();
@@ -105,12 +92,12 @@ public class WaveSystem : MonoBehaviour
     private void StartNextWave()
     {
         currentWave++;
-        totalZombies = startingZombieCount + currentWave - 1;
-        spawnedZombies = 0;
 
-        /*
-        El primer zombie de la oleada aparece inmediatamente.
-        */
+        totalEnemies =
+            startingEnemyCount +
+            (currentWave - 1) * enemiesAddedPerWave;
+
+        spawnedEnemies = 0;
 
         spawnTimer = 0f;
         isWaitingForNextWave = false;
@@ -124,26 +111,21 @@ public class WaveSystem : MonoBehaviour
         scoreManager.AddWavePoints();
     }
 
-    /*
-    LÓGICA ANTERIOR DE DELAY ALEATORIO:
-
-    Este método se conserva porque corresponde al sistema anterior
-    de generación de zombies mediante un rango de tiempo aleatorio.
-
-    Ahora el método puede reutilizarse para determinar cuánto esperar
-    después de que muera un zombie antes de generar el siguiente.
-
-    No borrar.
-    */
     private float GetNextSpawnDelay()
     {
-        return Random.Range(minimumSpawnDelay, maximumSpawnDelay);
+        return Random.Range(
+            minimumSpawnDelay,
+            maximumSpawnDelay
+        );
     }
 
     private void ValidateConfiguration()
     {
-        if (startingZombieCount < 1)
-            startingZombieCount = 1;
+        if (startingEnemyCount < 1)
+            startingEnemyCount = 1;
+
+        if (enemiesAddedPerWave < 0)
+            enemiesAddedPerWave = 0;
 
         if (minimumSpawnDelay < 0f)
             minimumSpawnDelay = 0f;
@@ -160,14 +142,15 @@ public class WaveSystem : MonoBehaviour
         return currentWave;
     }
 
-    public int GetKilledZombies()
+    public int GetKilledEnemies()
     {
-        return spawnedZombies - enemySystem.GetAliveZombieCount();
+        return spawnedEnemies -
+            enemySystem.GetAliveEnemyCount();
     }
 
-    public int GetTotalZombies()
+    public int GetTotalEnemies()
     {
-        return totalZombies;
+        return totalEnemies;
     }
 
     public int GetRemainingCooldownSeconds()

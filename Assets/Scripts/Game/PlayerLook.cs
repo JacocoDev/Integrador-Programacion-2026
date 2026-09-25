@@ -7,8 +7,9 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private GameManager gameManager;
 
-    [Header("Look Settings")]
-    [SerializeField] private float sensitivity = 0.25f;
+    [Header("Sensitivity")]
+    [SerializeField] private float minimumSensitivity = 0.05f;
+    [SerializeField] private float maximumSensitivity = 0.45f;
 
     private InputAction lookAction;
 
@@ -23,8 +24,30 @@ public class PlayerLook : MonoBehaviour
             return;
 
         Vector2 lookInput = lookAction.ReadValue<Vector2>();
-        float rotationY = lookInput.x * sensitivity;
 
-        transform.Rotate(0f, rotationY, 0f);
+        float sensitivity = GetSensitivity();
+
+        float rotationY =
+            lookInput.x *
+            sensitivity;
+
+        transform.Rotate(
+            0f,
+            rotationY,
+            0f
+        );
+    }
+
+    private float GetSensitivity()
+    {
+        int value = Settings.GetSensitivity();
+
+        float normalizedValue = value / 10f;
+
+        return Mathf.Lerp(
+            minimumSensitivity,
+            maximumSensitivity,
+            normalizedValue
+        );
     }
 }

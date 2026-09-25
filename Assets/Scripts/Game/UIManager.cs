@@ -50,33 +50,41 @@ public class UIManager : MonoBehaviour
 
     private void UpdateAmmoUI()
     {
-        ammoText.text = $"{shotgun.GetCurrentAmmo()}/{shotgun.GetMaxAmmo()} Ammo";
+        ammoText.text =
+            $"{shotgun.GetCurrentAmmo()}/{shotgun.GetMaxAmmo()} Ammo";
     }
 
     private void UpdateHealthUI()
     {
-        healthText.text = $"{playerHealth.GetCurrentHealth()} HP";
+        healthText.text =
+            $"{playerHealth.GetCurrentHealth()} HP";
     }
 
     private void UpdateWaveUI()
     {
         if (waveSystem.IsWaitingForNextWave())
         {
-            int remainingSeconds = waveSystem.GetRemainingCooldownSeconds();
-            waveText.text = $"Wave Completed!\nNext Wave in {remainingSeconds} s";
+            int remainingSeconds =
+                waveSystem.GetRemainingCooldownSeconds();
+
+            waveText.text =
+                $"Wave Completed!\nNext Wave in {remainingSeconds} s";
+
             return;
         }
 
         int wave = waveSystem.GetCurrentWave();
-        int killedZombies = waveSystem.GetKilledZombies();
-        int totalZombies = waveSystem.GetTotalZombies();
+        int killedEnemies = waveSystem.GetKilledEnemies();
+        int totalEnemies = waveSystem.GetTotalEnemies();
 
-        waveText.text = $"Wave {wave}\n(Zombies {killedZombies}/{totalZombies})";
+        waveText.text =
+            $"Wave {wave}\n(Enemies {killedEnemies}/{totalEnemies})";
     }
 
     private void UpdateScoreUI()
     {
-        scoreText.text = $"Score: {scoreManager.GetCurrentScore()}";
+        scoreText.text =
+            $"Score: {scoreManager.GetCurrentScore()}";
     }
 
     private void UpdateScorePopupUI()
@@ -97,7 +105,9 @@ public class UIManager : MonoBehaviour
         if (!scoreManager.HasScoreNotification())
             return;
 
-        scorePopupText.text = scoreManager.GetNextScoreNotification();
+        scorePopupText.text =
+            scoreManager.GetNextScoreNotification();
+
         scorePopupText.gameObject.SetActive(true);
 
         scorePopupTimer = scorePopupDuration;
@@ -119,8 +129,11 @@ public class UIManager : MonoBehaviour
         scoreSummaryText.gameObject.SetActive(true);
         leaderboardsButton.SetActive(true);
 
-        finalScoreText.text = $"Final Score: {scoreManager.GetFinalScore()}";
-        scoreSummaryText.text = scoreManager.GetScoreSummary();
+        finalScoreText.text =
+            $"Final Score: {scoreManager.GetFinalScore()}";
+
+        scoreSummaryText.text =
+            scoreManager.GetScoreSummary();
     }
 
     public void OpenLeaderboards()
