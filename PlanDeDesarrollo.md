@@ -11,7 +11,7 @@
 - [ ] **9. Integración del Controlador Físico**
 - [x] **10. Más Tipos de Enemigos**
 - [x] **11. Sistema de Progresión y Dificultad de Oleadas**
-- [ ] **12. Otros Menús (Configuración y Créditos)**
+- [x] **12. Otros Menús (Configuración y Créditos)**
 - [ ] **13. Ajustes Finales, Balance y Pulido**
 - [ ] **14. Mejora de Assets (Audio, UI, Modelos, Efectos, etc.)**
 - [ ] **15. Partida Personalizable**
